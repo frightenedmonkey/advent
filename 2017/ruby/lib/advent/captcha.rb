@@ -1,5 +1,17 @@
 
 module Advent
+  class InvalidInputError < StandardError; end
+
+  class Accumulator
+    def sum(digits)
+      if digits.empty?
+        0
+      else
+        digits.sum
+      end
+    end
+  end
+
   class Captcha
 
     def initialize
@@ -18,7 +30,7 @@ module Advent
     def calculate_captcha(digits)
       splits = splitter(digits)
       separated = sequentially_awesome(splits)
-      captcha_sum(separated)
+      Advent::Accumulator.new.sum(separated)
     end
 
     def splitter(digits)
@@ -60,14 +72,6 @@ module Advent
       sequentially_awesome(digits, element)
     end
 
-    def captcha_sum(digits)
-      if digits.empty?
-        0
-      else
-        digits.sum
-      end
-    end
   end
 
-  class InvalidInputError < StandardError; end
 end
