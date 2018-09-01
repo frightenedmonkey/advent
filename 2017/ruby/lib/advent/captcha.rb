@@ -2,23 +2,61 @@
 module Advent
   class InvalidInputError < StandardError; end
 
-  class Accumulator
-    def sum(digits)
-      if digits.empty?
+  class CaptchaCalculator
+    attr_accessor :digits, :accumulator
+
+    def initialize(digits)
+      @digits = digits
+      @accumulator = []
+    end
+
+    def self.calculate!(digits)
+      raise InvalidInputError unless digits.is_a? Array
+      new(digits)
+        .uniquify!
+        .sum
+    end
+
+    ##
+    # uniquify! builds the accumulator array by comparing each element of the
+    # digits array with the element after it sequentially. The exception is that
+    # the last element of the digits array is compared with first element for
+    # inclusion in the accumulator.
+    #
+    # For example, if [1,2,3,1] is uniquified, then the accumulator value will
+    # be [1]. For [1,1,2,2], the accumulator value will be [1,2].
+    #
+    # If the last var is nil, then we know that this was the first frame on the
+    # call stack. As such, we have to compare the element we're comparing to the
+    # first element of the digits array because we are recursing through the digits
+    # array in reverse order.
+
+    def uniquify!(last = nil)
+      # returning self when we're done recursing through the digits allows
+      # us to chain the #sum method in the calculate! class method
+      return self if digits.empty?
+      element = @digits.pop
+
+      if last.nil?
+        @accumulator.push(element) if element == @digits.first
+      else
+        @accumulator.push(element) if element == last
+      end
+      uniquify!(element)
+    end
+
+    def sum
+      if @accumulator.empty?
         0
       else
-        digits.sum
+        @accumulator.sum
       end
     end
   end
 
   class Captcha
 
-    def initialize
-      @accumulator = []
-    end
-
-    def self.calculate(digits)
+    def self.calculate!(digits)
       new(calculate(digits))
     end
 
@@ -29,49 +67,11 @@ module Advent
 
     def calculate_captcha(digits)
       splits = splitter(digits)
-      separated = sequentially_awesome(splits)
-      Advent::Accumulator.new.sum(separated)
+      Advent::CaptchaCalculator.calculate! splits
     end
 
     def splitter(digits)
       String(digits).split('').map {|i| Integer(i) }
     end
-
-    ##
-    # Checks an array of integers; returns those elements of the array where
-    # the value of the element matches the following element.
-    #
-    # For the last element of the array, the comparator is the first element of
-    # the array. E.g., [1,2,3,1] will return [1] because the only matching elements
-    # are the last element -- a 1 -- and the first element -- also a 1.
-    #
-    # This implementation recurses in reverse order through the array initially
-    # passed into it. The last variable is only initialized after the first call
-    # so we use it to see whether the method is being called for the first time
-    # (i.e., it is nil).
-
-    def sequentially_awesome(digits, last = nil)
-      return @accumulator if digits.empty?
-
-      element = digits.pop
-
-      # if last is nil, that means sequentially_awesome is being called on an
-      # array of integers for the first time, so we need to compare the value to
-      # the first element of the digits array.
-      #
-      # The else clause is the default method of comparing, where we care whether
-      # the element has the same value as the digit that followed it in the array,
-      # which value was set in the last variable by the method during the previous
-      # call in the call stack.
-      if last.nil?
-        @accumulator.push(element) if element == digits.first
-      else
-        @accumulator.push(element) if element == last
-      end
-
-      sequentially_awesome(digits, element)
-    end
-
   end
-
 end
