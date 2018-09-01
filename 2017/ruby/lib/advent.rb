@@ -1,3 +1,4 @@
+require 'advent/captcha'
 
 class Advent
   def parse_captcha(digits)
