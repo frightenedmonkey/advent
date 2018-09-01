@@ -54,6 +54,52 @@ module Advent
     end
   end
 
+  class HalfComparator
+    attr_accessor :digits, :accumulator
+
+    def initialize(digits)
+      @digits = splitter(digits)
+      @accumulator = []
+    end
+
+    def accumulate
+      len = @digits.length
+      digits.each_with_index do |n, idx|
+        comp_idx = comparator_index(idx, len)
+        if n == @digits[comp_idx]
+          @accumulator.push(n)
+        end
+      end
+      self
+    end
+
+    def self.calculate!(digits)
+      new(digits).accumulate.sum
+    end
+
+    def comparator_index(current_idx, length)
+      #index_length = length - 1
+      comparator = length / 2
+      if (current_idx + comparator) < length
+        comparator + current_idx
+      else
+        (comparator + current_idx) - length
+      end
+    end
+
+    def sum
+      if @accumulator.empty?
+        0
+      else
+        @accumulator.sum
+      end
+    end
+
+    def splitter(digits)
+      String(digits).split('').map {|i| Integer(i) }
+    end
+  end
+
   class Captcha
 
     def self.calculate!(digits)

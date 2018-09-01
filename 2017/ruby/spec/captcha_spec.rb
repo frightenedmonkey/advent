@@ -68,3 +68,73 @@ describe Advent::CaptchaCalculator do
   end
 end
 
+describe Advent::HalfComparator do
+  context 'with digits 1212' do
+    subject { Advent::HalfComparator.new(1212).accumulate }
+    it 'should return 6' do
+      expect(subject.sum).to eq(6)
+    end
+  end
+
+  context 'with digits 1221' do
+    subject { Advent::HalfComparator.new(1221).accumulate }
+    it 'should return 0' do
+      expect(subject.sum).to eq(0)
+    end
+  end
+
+  context 'with digits 123425' do
+    subject { Advent::HalfComparator.new(123425).accumulate }
+    it 'should return 4' do
+      expect(subject.sum).to eq(4)
+    end
+  end
+
+  context 'with digits 123123' do
+    subject { Advent::HalfComparator.new(123123).accumulate }
+    it 'should return 12' do
+      expect(subject.sum).to eq(12)
+    end
+  end
+
+  context 'with digits 12131415' do
+    subject { Advent::HalfComparator.new(12131415).accumulate }
+    it 'should return 4' do
+      expect(subject.sum).to eq(4)
+    end
+  end
+
+  describe 'accumulate' do
+    subject { Advent::HalfComparator.new(1234) }
+    it 'should accumulate 1,2,1,2 from 1212' do
+      subject.digits = [1,2,1,2]
+      subject.accumulate
+      expect(subject.accumulator.sort).to eq([1,2,1,2].sort)
+    end
+  end
+
+  describe '#comparator_index' do
+    subject { Advent::HalfComparator.new(1122) }
+    context 'when at index 0 of a 4 element array' do
+      it 'should return 2' do
+        expect(subject.comparator_index(0, 4)).to eq(2)
+      end
+    end
+    context 'when at index 1 of a 4 element array' do
+      it 'should return 3' do
+        expect(subject.comparator_index(1, 4)).to eq(3)
+      end
+    end
+    context 'when at index 2 of a 4 element array' do
+      it 'should return 0' do
+        expect(subject.comparator_index(2, 4)).to eq(0)
+      end
+    end
+
+    context 'when at index 3 of a 4 element array' do
+      it 'should return 1' do
+        expect(subject.comparator_index(3, 4)).to eq(1)
+      end
+    end
+  end
+end
