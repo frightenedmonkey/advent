@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Advent::Checksum do
   describe '#find_small_large' do
-    subject { Advent::Checksum.new([]) }
+    subject { Advent::Checksum.new("1\t2\n1\t3") }
 
     it 'should return [1,9] from [5,1,9,5]' do
       expect(subject.find_small_large([5,1,9,5])).to eq([1,9])
@@ -20,7 +20,7 @@ describe Advent::Checksum do
   describe '.calculate' do
     context 'the provided spreadsheet' do
       it 'should calculate a checksum of 18' do
-        subject = Advent::Checksum.new('1 2')
+        subject = Advent::Checksum.new("1\t2\n1\t3")
         rows = [
           [5,1,9,5],
           [7,5,3],
@@ -28,13 +28,13 @@ describe Advent::Checksum do
         ]
 
         subject.rows = rows
-        expect(subject.accumulate.sum).to eq(18)
+        expect(subject.accumulate(:find_small_large).sum).to eq(18)
       end
     end
   end
 
   describe '#parse_spreadsheet' do
-    subject { Advent::Checksum.new([]) }
+    subject { Advent::Checksum.new("1\t2\n1\t3") }
     it 'should return an array of arrays of ints' do
       sample = <<~END
       737	1866	1565	1452	1908	1874	232	1928	201	241

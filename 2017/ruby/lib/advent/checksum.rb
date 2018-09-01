@@ -7,14 +7,14 @@ module Advent
       @accumulator = []
     end
 
-    def self.calculate!(spreadsheet)
+    def self.calculate!(spreadsheet, accumulator = :find_small_large)
       new(spreadsheet)
-        .accumulate
+        .accumulate(accumulator)
         .sum
     end
 
-    def accumulate
-      rows.map {|r| find_small_large(r) }
+    def accumulate(accumulator)
+      rows.map {|r| send(accumulator, r) }
         .map {|r| @accumulator.push(diff(r)) }
       self
     end
