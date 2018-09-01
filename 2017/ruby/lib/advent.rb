@@ -1,4 +1,4 @@
 require 'advent/captcha'
 
-class Advent
+module Advent
 end

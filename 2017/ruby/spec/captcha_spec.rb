@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Captcha do
-  subject { Captcha.new }
+describe Advent::Captcha do
+  subject { Advent::Captcha.new }
 
   describe '#calculate_captcha' do
     it 'should return 3 from 1122' do
@@ -36,6 +36,12 @@ describe Captcha do
     end
     it 'should return 3 from [1,2]' do
       expect(subject.captcha_sum([1,2])).to eq(3)
+    end
+  end
+
+  describe 'Advent::Captcha#calculate' do
+    it 'should raise an InvalidInputError when not given an Integer' do
+      expect { subject.calculate('banana') }.to raise_error(Advent::InvalidInputError)
     end
   end
 end
