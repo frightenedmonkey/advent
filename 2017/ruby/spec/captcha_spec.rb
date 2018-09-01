@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Advent::Captcha do
   subject { Advent::Captcha.new }
 
+  # the #calculate_captcha method is essentially the main method that actually
+  # returns the captcha output as described in https://adventofcode.com/2017/day/1
+  #
+  # This describe block is the set of tests for the captcha
   describe '#calculate_captcha' do
     it 'should return 3 from 1122' do
       expect(subject.calculate_captcha(1122)).to eq(3)
