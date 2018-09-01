@@ -57,7 +57,7 @@ module Advent
   class Captcha
 
     def self.calculate!(digits)
-      new(calculate(digits))
+      new.calculate(digits)
     end
 
     def calculate(digits)
