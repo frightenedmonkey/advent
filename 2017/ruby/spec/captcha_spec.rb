@@ -30,7 +30,7 @@ describe Advent::Captcha do
       expect(subject.sequentially_awesome([1,2,3,4])).to eq([])
     end
     it 'should return [1,1,2,2] from 1122' do
-      expect(subject.sequentially_awesome([1,1,2,2])).to eq([1,2])
+      expect(subject.sequentially_awesome([1,1,2,2]).sort).to eq([1,2].sort)
     end
   end
 
