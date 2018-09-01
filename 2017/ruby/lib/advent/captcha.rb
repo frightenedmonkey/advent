@@ -1,6 +1,6 @@
 
 class Captcha
-  def parse_captcha(digits)
+  def calculate_captcha(digits)
     splits = splitter(digits)
     separated = sequentially_awesome(splits)
     captcha_sum(separated)
