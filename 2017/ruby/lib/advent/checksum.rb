@@ -15,18 +15,14 @@ module Advent
 
     def accumulate(accumulator)
       rows.map {|r| send(accumulator, r) }
-        .map {|r| @accumulator.push(diff(r)) }
+        .map {|r| @accumulator.push(r) }
       self
-    end
-
-    def diff(row)
-      row.last - row.first
     end
 
     # ok, this isn't super performant as I'm going to iterate over the row twice
     # once each for largest & smallest integers
     def find_small_large(row)
-      [smallest(row), largest(row)]
+      largest(row) - smallest(row)
     end
 
     def smallest(row)
@@ -43,6 +39,22 @@ module Advent
         a = i if i > a
       end
       a
+    end
+
+    def find_even_divisors(row)
+      row.each_with_index do |n, idx|
+        row.each_with_index do |x, subidx|
+          # We don't want to divide the same number by itself, so skip if the index
+          # of the array is equal.
+          if idx == subidx
+            next
+          end
+
+          if x % n == 0
+            return x / n
+          end
+        end
+      end
     end
 
     def parse_spreadsheet(sheet)
