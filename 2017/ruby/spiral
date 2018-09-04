@@ -2,4 +2,5 @@
 
 require_relative 'lib/advent'
 
-puts Advent::Spiral.generate! 30
+puts Advent::Spiral.new.walk_the_spiral(347991)
+puts Advent::Spiral.new.generate_crazy_board(347991)
