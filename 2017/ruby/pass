@@ -2,4 +2,8 @@
 
 require_relative 'lib/advent'
 
+phrases = File.readlines('./pass_phrases.txt').select do |phrase|
+  Advent::Passphrase.new.valid?(phrase)
+end
 
+puts phrases.count
