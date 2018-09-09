@@ -16,6 +16,9 @@ module Advent
       [x, y]
     end
 
+    # surrounding_coordinates will grab all the possible coordinates around the
+    # current point. As such, there are two loops so that we can generate all
+    # possible permutations for each variation on both x & y points.
     def surrounding_coordinates
       surrounding = []
       [-1,1].each do |first_adder|
@@ -27,6 +30,8 @@ module Advent
           surrounding.push [first_val, second_val]
         end
       end
+      # because of how we're generating all possible points, there are some duplicate
+      # entries, so let's clean it up before returning the list of points.
       surrounding.sort.uniq
     end
 
@@ -120,6 +125,11 @@ module Advent
       @point.manhattan_distance
     end
 
+    # generate_crazy_board uses a Hash to keep track of the values of the points
+    # of the board that our point was walked so far. The hash key is the tuple
+    # of the coordinates, with the value being the value of those points. This
+    # is sorta inefficient because we're getting all the coordinates for each
+    # point, even if that coordinate doesn't have an assigned value. Oh well.
     def generate_crazy_board target_value
       @point = Advent::Point.new(0,0)
       board = {}
@@ -129,9 +139,12 @@ module Advent
       while last_value <= target_value
         @point.move
         surrounding_points = @point.surrounding_coordinates
+
         new_point_value = surrounding_points.map do |coords|
           board.fetch(coords, 0)
-        end.reduce(&:+)
+        end
+          .reduce(&:+)
+
         board[@point.current_position] = new_point_value
         last_value = new_point_value.dup
       end
