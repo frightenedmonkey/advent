@@ -1,0 +1,15 @@
+#! /usr/bin/env ruby
+
+require_relative 'lib/advent'
+
+phrases = File.readlines('./pass_phrases.txt').select do |phrase|
+  Advent::Passphrase.new.valid?(phrase)
+end
+
+puts "There are #{phrases.count} valid passphrases"
+
+anagram_valid_phrases = phrases.select do |phrase|
+  Advent::Passphrase.new.anagram_valid? phrase
+end
+
+puts "There are #{anagram_valid_phrases.count} valid non-anagram passphrases"
