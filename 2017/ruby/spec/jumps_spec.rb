@@ -20,6 +20,17 @@ describe Advent::Jumps do
     end
   end
 
+  describe '#increment_current_offset' do
+    context 'we are using the strange offset increment/decrement' do
+      it 'should decrement if the offset is 3 or more' do
+        subject.instance_variable_set(:@current_location, 3)
+        subject.strange = true
+        subject.increment_current_offset
+        expect(subject.offsets.last).to eq(2)
+      end
+    end
+  end
+
   describe '#next_location_valid?' do
     context 'when the next location is a valid index location' do
       it 'should return true' do
@@ -39,6 +50,13 @@ describe Advent::Jumps do
     it 'should take 5 steps to exit' do
       subject.move_until_exit
       expect(subject.steps).to eq 5
+    end
+    context 'using the strange offset change' do
+      it 'should take 10 steps to exit' do
+        subject.strange = true
+        subject.move_until_exit
+        expect(subject.steps).to eq 10
+      end
     end
   end
 end

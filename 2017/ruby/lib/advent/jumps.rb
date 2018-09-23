@@ -1,14 +1,15 @@
 module Advent
   class Jumps
-    attr_accessor :offsets, :current_location, :steps
+    attr_accessor :offsets, :steps, :strange
 
     # the offsets is an array of values; each value in the array shows what the
     # offset for the particular array location (memory location) is.
-    def initialize(offsets)
+    def initialize(offsets, strange = false)
       @offsets = offsets
       @current_location = 0 # always start at the 0 index?
       @steps = 0
       @escaped = false
+      @strange = false
     end
 
     def jump!
@@ -46,7 +47,7 @@ module Advent
     end
 
     def increment_steps
-      @steps = @steps + 1
+      @steps += 1
     end
 
     def move_until_exit
@@ -56,7 +57,11 @@ module Advent
     end
 
     def increment_current_offset
-      @offsets[@current_location] += 1
+      if @strange && @offsets[@current_location] >= 3
+        @offsets[@current_location] -= 1
+      else
+        @offsets[@current_location] += 1
+      end
     end
   end
 end
