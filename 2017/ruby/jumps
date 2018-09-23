@@ -1,0 +1,16 @@
+#! /usr/bin/env ruby
+
+require_relative 'lib/advent'
+
+input = File.read('./jump_input.txt')
+parsed_input = input.split("\n").map {|i| Integer(i) }
+jumper = Advent::Jumps.new(parsed_input.dup)
+
+jumper.move_until_exit
+
+puts "Normal offset change moves to exit: #{jumper.steps}"
+
+strange_jumper = Advent::Jumps.new(parsed_input.dup, true)
+strange_jumper.move_until_exit
+
+puts "Using stranger offset moves to exit: #{strange_jumper.steps}"
