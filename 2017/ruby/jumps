@@ -2,3 +2,10 @@
 
 require_relative 'lib/advent'
 
+input = File.read('./jump_input.txt')
+parsed_input = input.split("\n").map {|i| Integer(i) }
+jumper = Advent::Jumps.new(parsed_input)
+
+jumper.move_until_exit
+
+puts jumper.steps
