@@ -9,7 +9,7 @@ module Advent
       @current_location = 0 # always start at the 0 index?
       @steps = 0
       @escaped = false
-      @strange = false
+      @strange = strange
     end
 
     def jump!
