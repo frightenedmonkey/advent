@@ -19,8 +19,22 @@ func TestParsingStringToInt(t *testing.T) {
 	}
 }
 
-func TestCalculatingAListOfValues(t *testing.T) {
-	result := calculate(0, "./test_input.txt")
+func TestCalculatingAListOfValuesWithoutFindingDupes(t *testing.T) {
+	result := calculate(0, "./test_input.txt", false)
 
 	assert.Equal(t, 3, result)
+}
+
+func TestFindingTheFirstDupeFrequency(t *testing.T) {
+	result := calculate(0, "./test_input.txt", true)
+	assert.Equal(t, 2, result)
+
+	result = calculate(0, "./test_input2.txt", true)
+	assert.Equal(t, 0, result)
+
+	result = calculate(0, "./test_input3.txt", true)
+	assert.Equal(t, 10, result)
+
+	result = calculate(0, "./test_input4.txt", true)
+	assert.Equal(t, 5, result)
 }
